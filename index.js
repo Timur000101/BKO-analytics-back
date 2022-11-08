@@ -33,29 +33,12 @@ bot.on('message', async (msg) => {
 			}
 		})
 	}
-	
-	if(msg?.web_app_data?.data) {
-		console.log(31)
-		try {
-			const data = JSON.parse(msg?.web_app_data?.data)
-			console.log(data)
-			await bot.sendMessage(chatId, 'Спасибо за обратную связь!')
-			await bot.sendMessage(chatId, 'Данные: ' + data);
-			// await bot.sendMessage(chatId, 'Ваша улица: ' + data?.street);
-			//
-			// setTimeout(async () => {
-			// 	await bot.sendMessage(chatId, 'Всю информацию вы получите в этом чате');
-			// }, 3000)
-		} catch (e) {
-			console.log(e);
-		}
-	}
 });
 
 app.post('/web-data', async (req, res) => {
 	const { queryId, fromMonth } = req.body
 	try {
-		bot.answerWebAppQuery(queryId, {
+		await bot.answerWebAppQuery(queryId, {
 			type: 'article',
 			id: queryId,
 			title: 'Успешно',
