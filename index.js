@@ -6,7 +6,7 @@ const token = '5705800519:AAG2ckG_x3FQN8iLQpyAbcdhZUjy3hbQi_4';
 
 
 const bot = new TelegramBot(token, {polling: true});
-const webAppUrl = 'https://wonderful-pithivier-8f4107.netlify.app/'
+const webAppUrl = 'http://wonderful-pithivier-8f4107.netlify.app/'
 const app = express()
 
 
