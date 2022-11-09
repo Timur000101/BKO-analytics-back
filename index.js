@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const User = require('./src/models')
 
 const token = '5705800519:AAG2ckG_x3FQN8iLQpyAbcdhZUjy3hbQi_4';
-const webAppUrl = 'https://127.0.0.1:5173/'
+// const webAppUrl = 'https://127.0.0.1:5173/'
 const DB_PATH = `mongodb+srv://temur:SuccessMoron17@bko.qbseyac.mongodb.net/bko`
+const webAppUrl = 'https://admirable-tartufo-919591.netlify.app'
 // const DB_PATH = 'mongodb://localhost:27017/bko'
 const bot = new TelegramBot(token, {polling: true});
 
