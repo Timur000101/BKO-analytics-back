@@ -63,10 +63,14 @@ bot.on('message', async (msg) => {
 				setTimeout(async () => {
 					if (data.purchaseSum > costPrise) {
 						await bot.sendMessage(chatId, 'Итог: На закуп тратиться больше денег');
-					} else if (data.salaryEmployees > netProfit * 0.3) {
+					} else {
+						await bot.sendMessage(chatId, 'Итог: На закуп тратиться меньше денег');
+					}
+					if (data.salaryEmployees > netProfit * 0.3) {
 						await bot.sendMessage(chatId, 'Итог:  Надо продажи повисить или  сотрд. уменьшить');
-					} else  {
-						await bot.sendMessage(chatId, 'Итог:  Закуп хуевый');
+					}
+					if (data.expenditure > data.turnover * 0.2) {
+						await bot.sendMessage(chatId, 'Итог:  Уменьшить расходы');
 					}
 				}, 2000)
 			}).catch((err) => {
