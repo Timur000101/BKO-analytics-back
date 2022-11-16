@@ -11,7 +11,8 @@ const userSchema = new Schema({
 	purchaseSum: String,
 	numberEmployees: String,
 	salaryEmployees: String,
-	expenditure: String
+	expenditure: String,
+	businessType: String
 }, { timestamps: true });
 
 
