@@ -12,7 +12,8 @@ const userSchema = new Schema({
 	numberEmployees: String,
 	salaryEmployees: String,
 	expenditure: String,
-	businessType: String
+	businessType: String,
+	shouldBeMarkup: Number
 }, { timestamps: true });
 
 
