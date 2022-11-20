@@ -160,8 +160,11 @@ async function sendResultTable (chatId) {
   doc.end()
 
 	setTimeout(async () => {
+		await bot.sendMessage(chatId, 'Еще чуть-чуть :)')
+	}, 1000)
+	setTimeout(async () => {
 		await sendDocument(chatId)
-	}, 2000)
+	}, 3000)
 }
 
 
