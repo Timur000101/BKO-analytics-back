@@ -1,5 +1,5 @@
-// const webAppUrl = 'https://127.0.0.1:5173/'
-const webAppUrl = 'https://admirable-tartufo-919591.netlify.app'
+const webAppUrl = 'https://127.0.0.1:5173/'
+// const webAppUrl = 'https://admirable-tartufo-919591.netlify.app'
 
 export const getMainButtons = {
 	reply_markup: {

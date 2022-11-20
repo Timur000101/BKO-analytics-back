@@ -12,8 +12,8 @@ const localType = './src/font/Montserrat-Regular.ttf'
 
 
 const token = '5705800519:AAG2ckG_x3FQN8iLQpyAbcdhZUjy3hbQi_4';
-const DB_PATH = 'mongodb+srv://temur:SuccessMoron17@bko.qbseyac.mongodb.net/bko'
-// const DB_PATH = 'mongodb://localhost:27017/bko'
+// const DB_PATH = 'mongodb+srv://temur:SuccessMoron17@bko.qbseyac.mongodb.net/bko'
+const DB_PATH = 'mongodb://localhost:27017/bko'
 const bot = new TelegramBot(token, {polling: true});
 
 mongoose.connect(DB_PATH)
@@ -25,8 +25,6 @@ mongoose.connect(DB_PATH)
 
 // Create pdf file
 const sendDocUrl = `https://api.telegram.org/bot5705800519:AAG2ckG_x3FQN8iLQpyAbcdhZUjy3hbQi_4/sendDocument`;
-const doc = new PDFDocument({ margin: 30, size: 'A4' });
-doc.pipe(fs.createWriteStream("./document.pdf")); 
 
 if (process.env.NTBA_FIX_350) {
 	contentType = contentType || 'application/octet-stream';
@@ -61,6 +59,7 @@ const data = [
 ];
 
 async function sendDocument(chatId) {
+	const localData = data
 	const formData = new FormData();
 	formData.append('chat_id', chatId)
 	formData.append('document', fs.createReadStream('./document.pdf'), 'Отчет.pdf')
@@ -70,11 +69,22 @@ async function sendDocument(chatId) {
 		body: formData,
 		headers: { ...formData.getHeaders() }
 	})
-	const data = await response.json()
+	await response.json()
+	setTimeout(() => {
+		fs.unlink('./document.pdf', (err) => {
+			if (err) {
+					throw err;
+			}
+		});
+		localData[0].rows = []
+		localData[1].rows = []
+	}, 1000)
 }  
 
 
 async function sendResultTable (chatId) {
+	const doc = new PDFDocument({ margin: 30, size: 'A4' });
+	doc.pipe(fs.createWriteStream("./document.pdf"));
 	const user = await User.findOne({ userId: chatId })
 	const turnover = user.turnover // Оборот
 	const expenditure = user.expenditure // Расход
