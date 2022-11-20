@@ -1,7 +1,7 @@
 // const webAppUrl = 'https://127.0.0.1:5173/'
 const webAppUrl = 'https://admirable-tartufo-919591.netlify.app'
 
-const getMainButtons = {
+export const getMainButtons = {
 	reply_markup: {
 		keyboard: [
 			[{ text: 'Товар' }, { text: 'Услуга' }, { text: 'Аренда' }]
@@ -11,7 +11,7 @@ const getMainButtons = {
 	}
 }
 
-const getProductButtons = {
+export const getProductButtons = {
 	reply_markup: {
 		keyboard: [
 			[{ text: 'Оптом' }, { text: 'В розницу' }]
@@ -21,7 +21,7 @@ const getProductButtons = {
 	}
 }
 
-const getWebFormButton  = function (query) {
+export const getWebFormButton  = function (query) {
 	return {
 		reply_markup: {
 			keyboard: [
@@ -31,11 +31,4 @@ const getWebFormButton  = function (query) {
 			selective: true
 		}
 	} 
-}
-
-
-module.exports = {
-	getMainButtons,
-	getProductButtons,
-	getWebFormButton
 }
