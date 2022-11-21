@@ -107,7 +107,7 @@ async function sendResultTable (chatId) {
 	const shouldBeMargin = turnover - shouldBeCostPrice  // Маржа
 	const shouldBeExpenditure = shouldBeMargin * 0.2  // Расход
 	const shouldBeCompanyProfit = shouldBeMargin - shouldBeExpenditure  // Прибыль компании
-	const shouldBeTeamSalary = shouldBeCompanyProfit * (shouldBeMarkup / 100)
+	const shouldBeTeamSalary = shouldBeCompanyProfit * 0.3
 	const shouldBeOwnerProfit = shouldBeCompanyProfit - shouldBeTeamSalary
 
 	let step = 1
