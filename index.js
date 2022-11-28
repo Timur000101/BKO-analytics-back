@@ -26,9 +26,9 @@ mongoose.connect(DB_PATH)
 // Create pdf file
 const sendDocUrl = `https://api.telegram.org/bot5705800519:AAG2ckG_x3FQN8iLQpyAbcdhZUjy3hbQi_4/sendDocument`;
 
-if (process.env.NTBA_FIX_350) {
-	contentType = contentType || 'application/octet-stream';
-}
+// if (process.env.NTBA_FIX_350) {
+// 	contentType = contentType || 'application/octet-stream';
+// }
 
 async function getWebAppButton (chatId, query) {
 	await bot.sendMessage(chatId, 'Ниже появится кнопка, заполните форму', getWebFormButton(query))
@@ -89,8 +89,7 @@ async function sendResultTable (chatId) {
 	const turnover = user.turnover // Оборот
 	const expenditure = user.expenditure // Расход
 	const salaryEmployees = user.salaryEmployees
-	const markupTenge = (turnover * (user.markup / 100)) // Наценка в тенге
-	const costPrice = turnover - markupTenge // Себестоимость
+	const costPrice = turnover * ((100 - user.markup) / 100) // Себестоимость
 	const margin = turnover - costPrice // Маржа
 	const companyProfit = margin - expenditure // Прибыль компании
 	const teamSalary = companyProfit * 0.3 // ЗП команды
@@ -102,10 +101,10 @@ async function sendResultTable (chatId) {
 	} else {
 		shouldBeMarkup = user.businessType === 'product_retail' ? 30 : 15 // наценка
 	}
-	const shouldBeMarkUpTenge = (turnover * (shouldBeMarkup / 100)) // наценка в тенге
-	const shouldBeCostPrice = turnover - shouldBeMarkUpTenge  // Себестоимость
+	// const shouldBeMarkUpTenge = (turnover * (shouldBeMarkup / 100)) // наценка в тенге
+	const shouldBeCostPrice = turnover * ((100 - shouldBeMarkup) / 100)  // Себестоимость
 	const shouldBeMargin = turnover - shouldBeCostPrice  // Маржа
-	const shouldBeExpenditure = shouldBeMargin * 0.2  // Расход
+	const shouldBeExpenditure = (shouldBeMargin * 0.2) > expenditure ?  expenditure : shouldBeMargin * 0.2 // Расход
 	const shouldBeCompanyProfit = shouldBeMargin - shouldBeExpenditure  // Прибыль компании
 	const shouldBeTeamSalary = shouldBeCompanyProfit * 0.3
 	const shouldBeOwnerProfit = shouldBeCompanyProfit - shouldBeTeamSalary
@@ -115,27 +114,26 @@ async function sendResultTable (chatId) {
 	if (user.businessType === 'service') {
 		data[0].rows.push(
 			['Оборот', splitNumber(turnover, true), splitNumber(turnover, true)],
-			['Закуп', splitNumber(user.purchaseSum, true), splitNumber(costPrice, true)],
-			['Себестоимость', splitNumber(costPrice, true), splitNumber(costPrice, true)],
-			['Маржа', splitNumber(margin, true), splitNumber(margin, true)],
-			['Расходы', splitNumber(expenditure, true), splitNumber(margin * 0.2, true)],
-			['Кол. сотрд', user.numberEmployees, user.numberEmployees],
+			['Закуп', splitNumber(user.purchaseSum, true), splitNumber(shouldBeCostPrice, true)],
+			['Себестоимость', splitNumber(costPrice, true), splitNumber(shouldBeCostPrice, true)],
+			['Маржа', splitNumber(margin, true), splitNumber(shouldBeMargin, true)],
+			['Расходы', splitNumber(expenditure, true), splitNumber(shouldBeExpenditure, true)],
 			['Приб. компании', splitNumber(companyProfit, true), splitNumber(shouldBeCompanyProfit, true)],
-			['Приб. владельца', splitNumber(ownerProfit, true), splitNumber(shouldBeOwnerProfit, true)],
-			['ЗП сотрд', splitNumber(salaryEmployees, true), splitNumber(shouldBeTeamSalary, true)]
+			['Кол. сотрд', user.numberEmployees, user.numberEmployees],
+			['ЗП сотрд', splitNumber(salaryEmployees, true), splitNumber(shouldBeTeamSalary, true)],
+			['Приб. владельца', splitNumber(ownerProfit, true), splitNumber(shouldBeOwnerProfit, true)]
 		)
 	} else {
 		data[0].rows.push(
 			['Оборот', splitNumber(turnover, true), splitNumber(turnover, true)],
-			['Наценка', user.markup + '%', shouldBeMarkup + '%'],
-			['Закуп', splitNumber(user.purchaseSum, true), splitNumber(costPrice, true)],
-			['Себестоимость', splitNumber(costPrice, true), splitNumber(costPrice, true)],
-			['Маржа', splitNumber(margin, true), splitNumber(margin, true)],
-			['Расходы', splitNumber(expenditure, true), splitNumber(margin * 0.2, true)],
-			['Кол. сотрд', user.numberEmployees, user.numberEmployees],
+			['Закуп', splitNumber(user.purchaseSum, true), splitNumber(shouldBeCostPrice, true)],
+			['Себестоимость', splitNumber(costPrice, true), splitNumber(shouldBeCostPrice, true)],
+			['Маржа', splitNumber(margin, true), splitNumber(shouldBeMargin, true)],
+			['Расходы', splitNumber(expenditure, true), splitNumber(shouldBeExpenditure, true)],
 			['Приб. компании', splitNumber(companyProfit, true), splitNumber(shouldBeCompanyProfit, true)],
-			['Приб. владельца', splitNumber(ownerProfit, true), splitNumber(shouldBeOwnerProfit, true)],
-			['ЗП сотрд', splitNumber(salaryEmployees, true), splitNumber(shouldBeTeamSalary, true)]
+			['Кол. сотрд', user.numberEmployees, user.numberEmployees],
+			['ЗП сотрд', splitNumber(salaryEmployees, true), splitNumber(shouldBeTeamSalary, true)],
+			['Приб. владельца', splitNumber(ownerProfit, true), splitNumber(shouldBeOwnerProfit, true)]
 		)
 	}
 
