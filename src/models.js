@@ -5,15 +5,23 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
 	userId: String,
-	fromMonth: String,
 	turnover: String,
 	markup: String,
 	purchaseSum: String,
 	numberEmployees: String,
 	salaryEmployees: String,
 	expenditure: String,
-	businessType: String,
-	shouldBeMarkup: Number
+	oneEmployeeCost: String,
+	shouldBeOneEmployeeCost: String,
+	costPrice: String,
+	margin: String,
+	shouldBeExpenditure: String,
+	companyProfit: String,
+	shouldBeSalaryEmployees: String,
+	ownerProfit: String,
+	turnoverDeviation: String,
+	expenditureDeviation: String,
+	salaryEmployeesDeviation: String
 }, { timestamps: true });
 
 
