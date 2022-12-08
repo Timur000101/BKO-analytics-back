@@ -163,7 +163,7 @@ bot.on('message', async (msg) => {
 	const chatId = msg.chat.id;
 	const text = msg.text
 	if (text === '/start') {
-		await bot.sendMessage(chatId,  `Ниже появится кнопка "Аналитика", заполните форму.\nУслуга стоит 20 000 тг`, { reply_markup: {
+		await bot.sendMessage(chatId,  `Привет!\nДанный бот представляет собой самую простую финансовую таблицу.\nПоехали! Попробуем вывести и увидеть, как может выглядеть в цифрах твоя компания!\n1. Финансовая таблица\n2. Позволит легко высчитать основные показатели\n3. Просто забьете основные цифры\n4. Увидите примерный финансовый результат возможности вашей компании\nНиже появится кнопка "Аналитика", заполните форму.\nУслуга стоит 20 000 тг`, { reply_markup: {
 				keyboard: [
 					[ { text: 'Аналитика', web_app: { url: webAppUrl }} ],
 					[ { text: 'Договор оферты', web_app: { url: 'https://docs.google.com/document/d/16Qohr9PgbMjoravVdGpne3eCtq_w6wXr/edit?usp=share_link&ouid=114431697732675672393&rtpof=true&sd=true' }} ],
