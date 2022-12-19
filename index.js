@@ -75,7 +75,7 @@ async function sendResultTable (chatId) {
 	// Закуп
 	let purchaseSumResult = null
 	if (+user.turnoverDeviation > 1000000) {
-		purchaseSumResult = `Закуп должен быть на сумму ${splitNumber(shouldBePurchaseSum, true)}, у Вас отклонение ${splitNumber(user.purchaseSum  - factPurchaseSum, true)}`
+		purchaseSumResult = `Закуп должен быть на сумму ${splitNumber(Math.ceil(shouldBePurchaseSum), true)}, у Вас отклонение ${splitNumber(Math.ceil(user.purchaseSum  - factPurchaseSum), true)}`
 	} else if (+user.turnoverDeviation < -1000000) {
 		purchaseSumResult = 'У Вас на закуп тратиться меньше денег'
 	} else if (+user.turnoverDeviation <= 1000000 && +user.turnoverDeviation >= -1000000) {
@@ -88,19 +88,19 @@ async function sendResultTable (chatId) {
 	} else if (oneEmployeeCost >= 3000000) {
 		oneEmployeeCostResult = 'Норма'
 	} else {
-		oneEmployeeCostResult = `У Вас стоимость одного сотрудника ${splitNumber(oneEmployeeCost, true)}, должно быть 5 000 000 тг`
+		oneEmployeeCostResult = `У Вас стоимость одного сотрудника ${splitNumber(Math.ceil(oneEmployeeCost), true)}, должно быть 5 000 000 тг`
 	}
 	// Количество сотрудников
 	let numberEmployeesResult = null
 	if (oneEmployeeCost >= 3000000) {
 		numberEmployeesResult = user.numberEmployees
 	} else {
-		numberEmployeesResult = `У Вас должны быть ${Math.floor(user.turnover / user.shouldBeOneEmployeeCost)} сотрудников`
+		numberEmployeesResult = `У Вас должны быть ${Math.ceil(user.turnover / user.shouldBeOneEmployeeCost)} сотрудников`
 	}
 	// ЗП сотрудников
 	let salaryEmployeesResult = null
 	if (user.salaryEmployees > factSalaryEmployees + factSalaryEmployees * 0.1) {
-		salaryEmployeesResult = `Зарплата сотрудников должно быть ${factSalaryEmployees}, Вы в минусе ${splitNumber(user.salaryEmployees - factSalaryEmployees, true)}`
+		salaryEmployeesResult = `Зарплата сотрудников должно быть ${Math.ceil(factSalaryEmployees)}, Вы в минусе ${splitNumber(Math.ceil(user.salaryEmployees - factSalaryEmployees), true)}`
 	} else if (user.salaryEmployees < factSalaryEmployees + factSalaryEmployees * 0.1) {
 		salaryEmployeesResult = `У Вас недомотивированные сотрудники`
 	} else {
@@ -109,7 +109,7 @@ async function sendResultTable (chatId) {
 	
 	
 	
-	const expenditureResult = user.margin * 0.2 < user.expenditure ? `У Вас отклонение ${splitNumber(user.expenditure - user.margin * 0.2, true)}` : 'Расход норма'
+	const expenditureResult = user.margin * 0.2 < user.expenditure ? `У Вас отклонение ${splitNumber(Math.ceil(user.expenditure - user.margin * 0.2), true)}` : 'Расход норма'
 	
 	let shouldBeOwnerProfit = 0
 	if (+user.turnoverDeviation > 0) {
@@ -124,23 +124,21 @@ async function sendResultTable (chatId) {
 	
 	let ownerProfitResult = null
 	if (+user.ownerProfit < shouldBeOwnerProfit + +user.ownerProfit) {
-		ownerProfitResult = `Вы теряете ${splitNumber(shouldBeOwnerProfit, true)} в месяц`
+		ownerProfitResult = `Вы теряете ${splitNumber(Math.ceil(shouldBeOwnerProfit), true)} в месяц`
 	} else {
 		ownerProfitResult = 'Все отлично'
 	}
 	
-	console.log(shouldBeOwnerProfit)
-	
  	data[0].rows.push(
 		['Оборот', splitNumber(user.turnover, true), splitNumber(user.turnover, true)],
-		['Закуп', splitNumber(user.purchaseSum, true), `${Math.ceil(purchaseSumResult)}`],
+		['Закуп', splitNumber(user.purchaseSum, true), `${purchaseSumResult}`],
 		['Маржа', splitNumber(user.margin, true), ''],
-		['Расходы', splitNumber(user.expenditure, true), `${Math.ceil(expenditureResult)}`],
+		['Расходы', splitNumber(user.expenditure, true), `${expenditureResult}`],
 		['Приб. компании', splitNumber(user.companyProfit, true), ''],
-		['Стоимость одного сотрудника', splitNumber(Math.ceil(oneEmployeeCost), true), `${Math.ceil(oneEmployeeCostResult)}`],
-		['Кол. сотрд', user.numberEmployees, `${Math.ceil(numberEmployeesResult)}`],
-		['ЗП сотрд', splitNumber(Math.ceil(user.salaryEmployees), true), `${Math.ceil(salaryEmployeesResult)}`],
-		['Приб. владельца', splitNumber(Math.ceil(user.ownerProfit), true), `${Math.ceil(ownerProfitResult)}`]
+		['Стоимость одного сотрудника', splitNumber(Math.ceil(oneEmployeeCost), true), `${oneEmployeeCostResult}`],
+		['Кол. сотрд', user.numberEmployees, `${numberEmployeesResult}`],
+		['ЗП сотрд', splitNumber(Math.ceil(user.salaryEmployees), true), `${salaryEmployeesResult}`],
+		['Приб. владельца', splitNumber(Math.ceil(user.ownerProfit), true), `${ownerProfitResult}`]
 	)
 	
 	doc.table(data[0], {
