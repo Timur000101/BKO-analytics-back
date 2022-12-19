@@ -133,14 +133,14 @@ async function sendResultTable (chatId) {
 	
  	data[0].rows.push(
 		['Оборот', splitNumber(user.turnover, true), splitNumber(user.turnover, true)],
-		['Закуп', splitNumber(user.purchaseSum, true), `${purchaseSumResult}`],
+		['Закуп', splitNumber(user.purchaseSum, true), `${Math.ceil(purchaseSumResult)}`],
 		['Маржа', splitNumber(user.margin, true), ''],
-		['Расходы', splitNumber(user.expenditure, true), `${expenditureResult}`],
+		['Расходы', splitNumber(user.expenditure, true), `${Math.ceil(expenditureResult)}`],
 		['Приб. компании', splitNumber(user.companyProfit, true), ''],
-		['Стоимость одного сотрудника', splitNumber(oneEmployeeCost, true), `${oneEmployeeCostResult}`],
-		['Кол. сотрд', user.numberEmployees, `${numberEmployeesResult}`],
-		['ЗП сотрд', splitNumber(user.salaryEmployees, true), `${salaryEmployeesResult}`],
-		['Приб. владельца', splitNumber(user.ownerProfit, true), `${ownerProfitResult}`]
+		['Стоимость одного сотрудника', splitNumber(Math.ceil(oneEmployeeCost), true), `${Math.ceil(oneEmployeeCostResult)}`],
+		['Кол. сотрд', user.numberEmployees, `${Math.ceil(numberEmployeesResult)}`],
+		['ЗП сотрд', splitNumber(Math.ceil(user.salaryEmployees), true), `${Math.ceil(salaryEmployeesResult)}`],
+		['Приб. владельца', splitNumber(Math.ceil(user.ownerProfit), true), `${Math.ceil(ownerProfitResult)}`]
 	)
 	
 	doc.table(data[0], {
